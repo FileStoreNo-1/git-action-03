@@ -2,9 +2,11 @@
 #     ACCESS_KEY: ${{ secrets. ACCESS_KEY }}
 #     AWS-SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
 
-
 on:
-  - push
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 jobs:
   terraform-workflow:
     permissions:
@@ -32,8 +34,8 @@ jobs:
         run: terraform init
       - name: Terraform Validate
         run: terraform validate
-      - name: Terraform Plan
-        run: terraform plan
+      # - name: Terraform Plan
+      #   run: terraform plan
         # continue-on-error: true
       # - name: Terraform apply
       #   run: terraform apply -auto-approve
