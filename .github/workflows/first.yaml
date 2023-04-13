@@ -1,0 +1,49 @@
+# env:
+#     ACCESS_KEY: ${{ secrets. ACCESS_KEY }}
+#     AWS-SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
+
+
+on:
+  - push
+jobs:
+  terraform-workflow:
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name : Checkout
+        uses:  actions/checkout@v1
+      - name: Configure AWS Credentials 
+        uses: aws-actions/configure-aws-credentials@v1 
+        with: 
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }} 
+          aws-secret-access-key: ${{ secrets.SECRET_KEY}} 
+          aws-region: us-west-2
+      - name : Set Terraform
+        uses:     hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.1.9
+      - name: Terraform Initializing
+        run: terraform init
+      - name: Terraform Validate
+        run: terraform validate
+      - name: Terraform Plan
+        run: terraform plan
+        # continue-on-error: true
+      - name: Terraform apply
+        run: terraform apply -auto-approve
+      - name: Terraform destroy
+        run: terraform destroy -auto-approve
+      - name: release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+# defaults:
+#       run:
+#         working-directory: ./
+#         shell: bash  
