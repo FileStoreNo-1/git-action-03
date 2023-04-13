@@ -35,14 +35,14 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
         # continue-on-error: true
-      - name: Terraform apply
-        run: terraform apply -auto-approve
-      - name: Terraform destroy
-        run: terraform destroy -auto-approve
-      - name: release
-        run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      # - name: Terraform apply
+      #   run: terraform apply -auto-approve
+      # - name: Terraform destroy
+      #   run: terraform destroy -auto-approve
+      # - name: release
+      #   run: npx semantic-release
+      #   env:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 # defaults:
 #       run:
 #         working-directory: ./
